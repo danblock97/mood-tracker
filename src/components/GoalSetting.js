@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { databases } from '@/lib/appwrite';
 
 const GoalSetting = () => {
   const [title, setTitle] = useState('');
@@ -6,13 +8,25 @@ const GoalSetting = () => {
   const [targetDate, setTargetDate] = useState('');
   const [goals, setGoals] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newGoal = { title, description, targetDate, isCompleted: false };
-    setGoals([...goals, newGoal]);
-    setTitle('');
-    setDescription('');
-    setTargetDate('');
+    try {
+      const newGoal = { title, description, targetDate, isCompleted: false };
+      await databases.createDocument(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+        process.env.NEXT_PUBLIC_APPWRITE_GOALS_COLLECTION_ID,
+        'unique()',
+        newGoal
+      );
+      toast.success('Goal added successfully');
+      setGoals([...goals, newGoal]);
+      setTitle('');
+      setDescription('');
+      setTargetDate('');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to add goal');
+    }
   };
 
   const handleToggleCompletion = (index) => {
@@ -23,7 +37,7 @@ const GoalSetting = () => {
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="mt-8">
       <h2 className="text-2xl mb-4">Set Your Goals</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

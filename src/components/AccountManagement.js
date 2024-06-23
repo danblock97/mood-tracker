@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { account } from '../appwrite'; // Ensure you have configured the Appwrite client
-import { useRouter } from 'next/router';
+import { account, storage } from '@/lib/appwrite';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const AccountManagement = () => {
   const [user, setUser] = useState(null);
@@ -18,7 +19,7 @@ const AccountManagement = () => {
         setAvatar(user.prefs.avatar || '');
       } catch (error) {
         console.error(error);
-        router.push('/login'); // Redirect to login if the user is not authenticated
+        router.push('/login');
       }
     };
     fetchUser();
@@ -29,13 +30,29 @@ const AccountManagement = () => {
     setLoading(true);
     try {
       await account.updateName(username);
-      await account.updatePrefs({ avatar });
-      alert('Profile updated successfully');
+      if (avatar) {
+        await account.updatePrefs({ avatar });
+      }
+      toast.success('Profile updated successfully');
     } catch (error) {
       console.error(error);
-      alert('Failed to update profile');
+      toast.error('Failed to update profile');
     }
     setLoading(false);
+  };
+
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const response = await storage.createFile(process.env.NEXT_PUBLIC_APPWRITE_AVATAR_BUCKET_ID, 'unique()', file);
+        const avatarUrl = storage.getFilePreview(process.env.NEXT_PUBLIC_APPWRITE_AVATAR_BUCKET_ID, response.$id).href;
+        setAvatar(avatarUrl);
+      } catch (error) {
+        console.error(error);
+        toast.error('Failed to upload avatar');
+      }
+    }
   };
 
   const handleLogout = async () => {
@@ -63,13 +80,15 @@ const AccountManagement = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Avatar URL</label>
+            <label className="block text-gray-700 mb-2">Avatar</label>
             <input
-              type="url"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
+              type="file"
+              onChange={handleAvatarUpload}
               className="p-2 border rounded w-full"
             />
+            {avatar && (
+              <img src={avatar} alt="Avatar" className="mt-4 w-32 h-32 rounded-full" />
+            )}
           </div>
           <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded" disabled={loading}>
             {loading ? 'Updating...' : 'Update Profile'}
