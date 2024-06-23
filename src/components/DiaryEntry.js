@@ -1,20 +1,37 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { databases } from '@/lib/appwrite';
 
 const DiaryEntry = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [entries, setEntries] = useState([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newEntry = { title, content, date: new Date().toISOString() };
-    setEntries([...entries, newEntry]);
-    setTitle('');
-    setContent('');
+    try {
+      await databases.createDocument(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+        process.env.NEXT_PUBLIC_APPWRITE_JOURNAL_ENTRIES_COLLECTION_ID,
+        'unique()',
+        {
+          title,
+          content,
+          date: new Date().toISOString(),
+        }
+      );
+      toast.success('Diary entry saved successfully');
+      setEntries([...entries, { title, content, date: new Date().toISOString() }]);
+      setTitle('');
+      setContent('');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to save diary entry');
+    }
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="mt-8">
       <h2 className="text-2xl mb-4">Diary Entry</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -33,12 +50,12 @@ const DiaryEntry = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             className="p-2 border rounded w-full"
-            rows="6"
+            rows="4"
             required
           ></textarea>
         </div>
         <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">
-          Add Entry
+          Save Entry
         </button>
       </form>
       <div className="mt-6">

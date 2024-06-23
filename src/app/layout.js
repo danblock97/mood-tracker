@@ -1,12 +1,14 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
-import NavBar from "../components/NavBar";
+import { Inter } from 'next/font/google';
+import './globals.css';
+import NavBar from '../components/NavBar';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: "Mood Catcher",
-  description: "Track your mood and activities daily",
+  title: 'Mood Catcher',
+  description: 'Track your mood and activities daily',
 };
 
 export default function RootLayout({ children }) {
@@ -17,6 +19,7 @@ export default function RootLayout({ children }) {
         <main className="container mx-auto p-4">
           {children}
         </main>
+        <ToastContainer />
       </body>
     </html>
   );
