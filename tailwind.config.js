@@ -7,11 +7,16 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      transform: ['hover', 'focus'],
+      transitionProperty: {
+        'height': 'height'
       },
+    },
+  },
+  variants: {
+    extend: {
+      scale: ['active'],
+      rotate: ['active'],
     },
   },
   plugins: [],

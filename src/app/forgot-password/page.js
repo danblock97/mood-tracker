@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import { account } from '@/lib/appwrite';
 import { toast } from 'react-toastify';
@@ -19,19 +21,21 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl mb-4">Forgot Password</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="p-2 border rounded w-full mb-4"
-      />
-      <button onClick={handleForgotPassword} className="bg-blue-600 text-white py-2 px-4 rounded">
-        Send Reset Email
-      </button>
-      {message && <p className="mt-4">{message}</p>}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="p-4 bg-white shadow-md rounded-lg">
+        <h2 className="text-2xl mb-4">Forgot Password</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="p-2 border rounded w-full mb-4"
+        />
+        <button onClick={handleForgotPassword} className="bg-blue-600 text-white py-2 px-4 rounded">
+          Send Reset Email
+        </button>
+        {message && <p className="mt-4">{message}</p>}
+      </div>
     </div>
   );
 }
