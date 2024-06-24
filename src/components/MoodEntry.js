@@ -33,10 +33,9 @@ const MoodEntry = () => {
     setStep(2);
   };
 
-  const handleActivitiesChange = (event) => {
-    const value = event.target.value;
+  const handleActivitiesChange = (activity) => {
     setActivities((prev) =>
-      prev.includes(value) ? prev.filter((activity) => activity !== value) : [...prev, value]
+      prev.includes(activity) ? prev.filter((a) => a !== activity) : [...prev, activity]
     );
   };
 
@@ -73,49 +72,56 @@ const MoodEntry = () => {
     }
   };
 
+  const activityImageMapping = {
+    'family': 'family.png',
+    'friends': 'friends.png',
+    'date': 'date.png',
+    'exercise': 'exercise.png',
+    'sport': 'sport.png',
+    'relax': 'relax.png',
+    'movies': 'movies.png',
+    'gaming': 'gaming.png',
+    'reading': 'reading.png',
+    'cleaning': 'cleaning.png',
+    'sleeping early': 'sleeping-early.png',
+    'eating healthy': 'eating-healthy.png',
+    'shopping': 'shopping.png',
+  };
+
   return (
     <div className="p-4 bg-white shadow-md rounded-lg max-w-md mx-auto mt-8">
-      {step === 1 && (
-        <div className="animate-fade-in">
-          <h2 className="text-2xl mb-4">How are you?</h2>
-          <div className="flex justify-around mb-4">
-            {['happy', 'good', 'meh', 'bad', 'awful'].map((m) => (
-              <button key={m} onClick={() => handleMoodChange(m)} className="focus:outline-none">
-                <img src={`/images/${m}.png`} alt={m} className="w-12 h-12" />
-                <span className="block mt-2 text-sm">{m.charAt(0).toUpperCase() + m.slice(1)}</span>
-              </button>
-            ))}
-          </div>
+      <div className={`transition-opacity duration-500 ${step === 1 ? 'opacity-100' : 'opacity-50'}`}>
+        <h2 className="text-2xl mb-4 text-center">How are you?</h2>
+        <div className="flex justify-around mb-4">
+          {['happy', 'good', 'meh', 'bad', 'awful'].map((m) => (
+            <button
+              key={m}
+              onClick={() => handleMoodChange(m)}
+              className={`focus:outline-none flex flex-col items-center ${mood === m ? 'border-2 border-blue-600' : ''}`}
+            >
+              <img src={`/images/${m}.png`} alt={m} className="w-12 h-12" />
+              <span className={`block mt-2 text-sm ${mood === m ? 'text-blue-600' : ''}`}>
+                {m.charAt(0).toUpperCase() + m.slice(1)}
+              </span>
+            </button>
+          ))}
         </div>
-      )}
+      </div>
       {step === 2 && (
         <div className="animate-fade-in">
-          <h2 className="text-2xl mb-4">What have you been up to?</h2>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            {[
-              'family',
-              'friends',
-              'date',
-              'exercise',
-              'sport',
-              'relax',
-              'movies',
-              'gaming',
-              'reading',
-              'cleaning',
-              'sleep early',
-              'eat healthy',
-              'shopping',
-            ].map((activity) => (
-              <label key={activity} className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  value={activity}
-                  onChange={handleActivitiesChange}
-                  className="form-checkbox"
-                />
-                <span className="ml-2 text-sm">{activity.charAt(0).toUpperCase() + activity.slice(1)}</span>
-              </label>
+          <h2 className="text-2xl mb-4 text-center">What have you been up to?</h2>
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            {Object.keys(activityImageMapping).map((activity) => (
+              <button
+                key={activity}
+                onClick={() => handleActivitiesChange(activity)}
+                className={`focus:outline-none flex flex-col items-center ${activities.includes(activity) ? 'border-2 border-blue-600' : ''}`}
+              >
+                <img src={`/images/${activityImageMapping[activity]}`} alt={activity} className="w-12 h-12" />
+                <span className={`block mt-2 text-sm text-center ${activities.includes(activity) ? 'text-blue-600' : ''}`}>
+                  {activity}
+                </span>
+              </button>
             ))}
           </div>
           <textarea
