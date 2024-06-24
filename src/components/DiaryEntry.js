@@ -1,11 +1,27 @@
-import { useState } from 'react';
+"use client";
+
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { databases } from '@/lib/appwrite';
+import { databases, account } from '@/lib/appwrite';
 
 const DiaryEntry = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [entries, setEntries] = useState([]);
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const user = await account.get();
+        setUserId(user.$id);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getUser();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +34,7 @@ const DiaryEntry = () => {
           title,
           content,
           date: new Date().toISOString(),
+          user_id: userId,
         }
       );
       toast.success('Diary entry saved successfully');
