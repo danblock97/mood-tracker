@@ -5,10 +5,12 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { account, storage } from '@/lib/appwrite';
+import { FiLogOut, FiLogIn, FiEdit, FiSettings, FiPlusSquare, FiBookOpen, FiMenu, FiX } from 'react-icons/fi'; // Importing icons
 
 const NavBar = () => {
   const [user, setUser] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState("/default-avatar.png"); // Default avatar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { logout } = useAuth();
   const router = useRouter();
 
@@ -40,51 +42,67 @@ const NavBar = () => {
     router.push('/');
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleLinkClick = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
-    <nav className="bg-blue-600 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-lg">
-          Mood Catcher
-        </Link>
-        <div className="relative">
+    <>
+      <button
+        className="md:hidden p-4 text-blue-600 fixed z-50"
+        onClick={toggleSidebar}
+      >
+        {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+      </button>
+      <nav
+        className={`bg-white fixed md:h-full w-full md:w-60 p-4 shadow-lg transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? 'left-0' : '-left-full md:left-0'
+        }`}
+      >
+        <div className="flex flex-col items-center md:items-start space-y-4">
+          <Link href="/" className="text-blue-600 text-lg font-bold hidden md:block" onClick={handleLinkClick}>
+            Mood Catcher
+          </Link>
+          <Link href="/add-entry" className="flex items-center space-x-2" onClick={handleLinkClick}>
+            <FiEdit className="text-blue-600" />
+            <span className="hidden md:block text-gray-900">Log Mood</span>
+            {isSidebarOpen && <span className="md:hidden text-gray-900">Log Mood</span>}
+          </Link>
+          <Link href="/diary" className="flex items-center space-x-2" onClick={handleLinkClick}>
+            <FiBookOpen className="text-blue-600" />
+            <span className="hidden md:block text-gray-900">Log Diary</span>
+            {isSidebarOpen && <span className="md:hidden text-gray-900">Log Diary</span>}
+          </Link>
+          <Link href="/goals" className="flex items-center space-x-2" onClick={handleLinkClick}>
+            <FiPlusSquare className="text-blue-600" />
+            <span className="hidden md:block text-gray-900">Add a Goal</span>
+            {isSidebarOpen && <span className="md:hidden text-gray-900">Add a Goal</span>}
+          </Link>
+          <Link href="/account-management" className="flex items-center space-x-2" onClick={handleLinkClick}>
+            <FiSettings className="text-blue-600" />
+            <span className="hidden md:block text-gray-900">Settings</span>
+            {isSidebarOpen && <span className="md:hidden text-gray-900">Settings</span>}
+          </Link>
           {user ? (
-            <div className="flex items-center group">
-              <div className="relative">
-                <img
-                  src={avatarUrl}
-                  alt="Avatar"
-                  className="w-10 h-10 rounded-full cursor-pointer"
-                />
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 hover:opacity-100 group-hover:block hover:block">
-                  <Link href="/account" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    Account Management
-                  </Link>
-                  <Link href="/add-entry" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    Add Entry
-                  </Link>
-                  <Link href="/diary" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    Diary
-                  </Link>
-                  <Link href="/goals" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    Goals
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
+            <button onClick={handleLogout} className="flex items-center space-x-2">
+              <FiLogOut className="text-blue-600" />
+              <span className="hidden md:block text-gray-900">Logout</span>
+              {isSidebarOpen && <span className="md:hidden text-gray-900">Logout</span>}
+            </button>
           ) : (
-            <Link href="/auth" className="text-white">
-              Login
+            <Link href="/auth" className="flex items-center space-x-2" onClick={handleLinkClick}>
+              <FiLogIn className="text-blue-600" />
+              <span className="hidden md:block text-gray-900">Login</span>
+              {isSidebarOpen && <span className="md:hidden text-gray-900">Login</span>}
             </Link>
           )}
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 

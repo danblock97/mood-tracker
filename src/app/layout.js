@@ -17,10 +17,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} bg-gray-100 text-gray-900`}>
         <AuthProvider>
-          <NavBar />
-          <main className="container mx-auto p-4">
-            {children}
-          </main>
+          <div className="flex">
+            <NavBar />
+            <main className="flex-grow p-4 md:p-8">
+              {children}
+            </main>
+          </div>
           <ToastContainer />
         </AuthProvider>
       </body>
