@@ -1,9 +1,11 @@
-import GoalSetting from '@/components/GoalSetting';
+import GoalSetting from "@/components/GoalSetting";
 
-export default function GoalsPage() {
+const GoalsPage = () => {
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="p-4 bg-white rounded-lg">
       <GoalSetting />
     </div>
   );
-}
+};
+
+export default GoalsPage;

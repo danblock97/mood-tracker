@@ -27,7 +27,7 @@ const ViewDiary = () => {
   }, []);
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 max-w-md mx-auto p-4 bg-white rounded-lg">
       <h2 className="text-2xl mb-4">Your Diary Entries</h2>
       {entries.map((entry) => (
         <div key={entry.$id} className="mb-4 p-4 border rounded">

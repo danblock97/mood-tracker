@@ -1,9 +1,11 @@
 import ViewGoals from '@/components/ViewGoals';
 
-export default function GoalsPage() {
+const YourGoalsPage = () => {
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="p-4 bg-white rounded-lg">
       <ViewGoals />
     </div>
   );
-}
+};
+
+export default YourGoalsPage;

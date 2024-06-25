@@ -65,7 +65,7 @@ const GoalSetting = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mt-8 max-w-md mx-auto p-4 bg-white rounded-lg">
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">Title</label>
         <input

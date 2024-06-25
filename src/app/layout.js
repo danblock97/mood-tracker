@@ -15,13 +15,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-100 text-gray-900`}>
+      <body className={`${inter.className} bg-white text-gray-900`}>
         <AuthProvider>
           <div className="flex">
             <NavBar />
-            <main className="flex-grow p-4 md:p-8">
-              {children}
-            </main>
+            <main className="flex-grow p-4 md:p-8 md:ml-60">{children}</main>
           </div>
           <ToastContainer />
         </AuthProvider>

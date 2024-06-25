@@ -2,7 +2,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Cell, ResponsiveCo
 
 const MoodChart = ({ data }) => {
   const moodColors = {
-    happy: '#00C49F',
+    rad: '#00C49F',
     good: '#0088FE',
     meh: '#FFBB28',
     bad: '#FF8042',
@@ -10,7 +10,7 @@ const MoodChart = ({ data }) => {
   };
 
   const moodIcons = {
-    happy: '😊',
+    rad: '😊',
     good: '🙂',
     meh: '😐',
     bad: '😔',
@@ -18,8 +18,8 @@ const MoodChart = ({ data }) => {
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg mt-8">
-      <h2 className="text-2xl mb-4">Mood Over the Last 30 Days</h2>
+    <div className="p-4 bg-white rounded-lg mt-8 max-w-4xl mx-auto">
+      <h2 className="text-2xl mb-4 text-center">Mood Over the Last 30 Days</h2>
       <div className="w-full h-64 md:h-96">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
@@ -31,7 +31,7 @@ const MoodChart = ({ data }) => {
               tickFormatter={(tick) => moodIcons[tick]}
             />
             <Tooltip
-              formatter={(value, name) => [moodIcons[value], 'Mood']}
+              formatter={(value) => [moodIcons[value], 'Mood']}
               labelFormatter={(label) => `Day ${label}`}
             />
             <Bar dataKey="mood" fill="#8884d8">

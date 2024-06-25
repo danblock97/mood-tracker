@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-4 bg-white shadow-md rounded-lg">
+      <div className="p-4 bg-white rounded-lg">
         <h2 className="text-2xl mb-4">Forgot Password</h2>
         <input
           type="email"

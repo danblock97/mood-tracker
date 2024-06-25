@@ -48,7 +48,7 @@ const DiaryEntry = () => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 max-w-md mx-auto p-4 bg-white rounded-lg">
       <h2 className="text-2xl mb-4">Diary Entry</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

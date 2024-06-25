@@ -1,134 +1,87 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { account, storage } from '@/lib/appwrite';
-import { useRouter } from 'next/navigation';
+import { account } from '@/lib/appwrite';
 import { toast } from 'react-toastify';
 
 const AccountManagement = () => {
-  const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [avatar, setAvatar] = useState('/default-avatar.png');
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchUserData = async () => {
       try {
-        const currentUser = await account.get();
-        setUser(currentUser);
-        setEmail('');
-        const fileId = currentUser.prefs.avatarFileId;
-        if (fileId) {
-          const avatarUrl = storage.getFilePreview(process.env.NEXT_PUBLIC_APPWRITE_AVATAR_BUCKET_ID, fileId).href;
-          setAvatar(avatarUrl);
-        }
+        const user = await account.get();
+        setEmail(user.email);
       } catch (error) {
-        console.error(error);
-        router.push('/auth');
+        toast.error('Failed to fetch user data');
       }
     };
-    fetchUser();
-  }, [router]);
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    fetchUserData();
+  }, []);
+
+  const handleUpdateEmail = async () => {
     try {
-      if (email) {
-        await account.updateEmail(email, currentPassword);
-      }
-      if (currentPassword && newPassword) {
-        await account.updatePassword(newPassword, currentPassword);
-      }
-      if (avatar !== '/default-avatar.png') {
-        await account.updatePrefs({ avatarFileId: avatar });
-      }
-      toast.success('Profile updated successfully');
+      await account.updateEmail(email, password);
+      toast.success('Email updated successfully');
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to update profile');
+      toast.error('Failed to update email');
     }
-    setLoading(false);
   };
 
-  const handleAvatarUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const response = await storage.createFile(process.env.NEXT_PUBLIC_APPWRITE_AVATAR_BUCKET_ID, 'unique()', file);
-        const avatarUrl = storage.getFilePreview(process.env.NEXT_PUBLIC_APPWRITE_AVATAR_BUCKET_ID, response.$id).href;
-        setAvatar(avatarUrl);
-        await account.updatePrefs({ avatarFileId: response.$id });
-      } catch (error) {
-        console.error(error);
-        toast.error('Failed to upload avatar');
-      }
+  const handleUpdatePassword = async () => {
+    try {
+      await account.updatePassword(password, newPassword);
+      toast.success('Password updated successfully');
+    } catch (error) {
+      toast.error('Failed to update password');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6">Account Management</h2>
-        {user ? (
-          <form onSubmit={handleUpdate}>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Email Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="p-2 border rounded w-full"
-                placeholder="Enter new email if you want to change"
-              />
-            </div>
-            {(email || newPassword) && (
-              <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Current Password</label>
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="p-2 border rounded w-full"
-                  required
-                />
-              </div>
-            )}
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">New Password</label>
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="p-2 border rounded w-full"
-                placeholder="Enter new password if you want to change"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 mb-2">Avatar</label>
-              <input
-                type="file"
-                onChange={handleAvatarUpload}
-                className="p-2 border rounded w-full"
-              />
-              {avatar && (
-                <img src={avatar} alt="Avatar" className="mt-4 w-32 h-32 rounded-full mx-auto" />
-              )}
-            </div>
-            <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded" disabled={loading}>
-              {loading ? 'Updating...' : 'Update Profile'}
-            </button>
-          </form>
-        ) : (
-          <p>Loading...</p>
-        )}
-        <a href={`mailto:support@example.com?subject=Mood Tracker - Account Deletion Request&body=Please delete my account with email ${user?.email}`} className="mt-4 block w-full text-center bg-red-600 text-white py-2 px-4 rounded">
-          Request Account Deletion
-        </a>
+    <div className="p-6 bg-white rounded-lg max-w-lg mx-auto mt-12">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Account Management</h2>
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-medium mb-2">Current Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <button
+        onClick={handleUpdateEmail}
+        className="bg-blue-600 text-white py-3 px-6 rounded w-full font-semibold hover:bg-blue-700 transition-colors mb-6"
+      >
+        Update Email
+      </button>
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-medium mb-2">New Password</label>
+        <input
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+      <button
+        onClick={handleUpdatePassword}
+        className="bg-blue-600 text-white py-3 px-6 rounded w-full font-semibold hover:bg-blue-700 transition-colors"
+      >
+        Update Password
+      </button>
     </div>
   );
 };

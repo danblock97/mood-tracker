@@ -1,5 +1,3 @@
-import MoodChart from './MoodChart';
-
 const MoodEntryItem = ({ entry }) => {
   const { mood, activities, note, date } = entry;
 
@@ -12,23 +10,23 @@ const MoodEntryItem = ({ entry }) => {
   };
 
   const activityImageMapping = {
-    'family': 'family.png',
-    'friends': 'friends.png',
-    'date': 'date.png',
-    'exercise': 'exercise.png',
-    'sport': 'sport.png',
-    'relax': 'relax.png',
-    'movies': 'movies.png',
-    'gaming': 'gaming.png',
-    'reading': 'reading.png',
-    'cleaning': 'cleaning.png',
-    'sleeping early': 'sleeping-early.png',
-    'eating healthy': 'eating-healthy.png',
-    'shopping': 'shopping.png',
+    family: 'family.png',
+    friends: 'friends.png',
+    date: 'date.png',
+    exercise: 'exercise.png',
+    sport: 'sport.png',
+    relax: 'relax.png',
+    movies: 'movies.png',
+    gaming: 'gaming.png',
+    reading: 'reading.png',
+    cleaning: 'cleaning.png',
+    sleeping: 'sleeping-early.png',
+    eatingHealthy: 'eating-healthy.png',
+    shopping: 'shopping.png',
   };
 
   return (
-    <div className="p-4 mb-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 mb-4 bg-white rounded-lg max-w-md mx-auto">
       <div className="flex items-center mb-4">
         <div className={`w-10 h-10 ${moodColors[mood]} flex items-center justify-center rounded-full`}>
           <img src={`/images/${mood}.png`} alt={mood} className="w-8 h-8" />

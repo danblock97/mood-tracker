@@ -13,7 +13,7 @@ const LoginForm = ({ onLogin, onFlip }) => {
   };
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md">
+    <div className="p-8 bg-white rounded-lg">
       <h2 className="text-2xl mb-6">Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

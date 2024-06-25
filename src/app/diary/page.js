@@ -1,9 +1,11 @@
-import DiaryEntry from '@/components/DiaryEntry';
+import DiaryEntry from "@/components/DiaryEntry";
 
-export default function DiaryPage() {
+const DiaryPage = () => {
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="p-4 bg-white rounded-lg">
       <DiaryEntry />
     </div>
   );
-}
+};
+
+export default DiaryPage;
