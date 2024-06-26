@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await account.deleteSession('current');
     setUser(null);
-    router.push('/login');
+    router.push('/auth');
   };
 
   return (
