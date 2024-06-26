@@ -36,7 +36,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-100 p-8">
+    <div className="flex items-center justify-center p-8">
       <div className="relative w-full max-w-md auth-card">
         <div className={`card-inner ${isFlipped ? 'rotate-y-180' : ''}`}>
           <div className="absolute inset-0 backface-hidden">
