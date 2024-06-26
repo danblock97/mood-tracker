@@ -27,15 +27,17 @@ const ViewDiary = () => {
   }, []);
 
   return (
-    <div className="mt-8 max-w-md mx-auto p-4 bg-white rounded-lg">
-      <h2 className="text-2xl mb-4">Your Diary Entries</h2>
-      {entries.map((entry) => (
-        <div key={entry.$id} className="mb-4 p-4 border rounded">
-          <h4 className="text-lg font-semibold">{entry.title}</h4>
-          <p className="text-gray-600">{new Date(entry.date).toLocaleString()}</p>
-          <p>{entry.content}</p>
-        </div>
-      ))}
+    <div className="mt-8 max-w-4xl mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-8 text-center">Your Diary Entries</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {entries.map((entry) => (
+          <div key={entry.$id} className="bg-white p-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+            <h4 className="text-xl font-semibold mb-2 text-blue-700">{entry.title}</h4>
+            <p className="text-gray-500 mb-4">{new Date(entry.date).toLocaleString()}</p>
+            <p className="text-gray-700">{entry.content}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

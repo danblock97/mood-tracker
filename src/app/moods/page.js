@@ -28,7 +28,7 @@ const MoodPage = () => {
 
         // Prepare data for the chart
         const data = response.documents.map(entry => ({
-          date: new Date(entry.date).getDate(),
+          date: entry.date, // Ensure date is in correct format
           mood: entry.mood,
         }));
         setChartData(data);
