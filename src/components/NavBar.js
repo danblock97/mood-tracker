@@ -70,10 +70,6 @@ const NavBar = () => {
                       <FiCheckCircle className="text-blue-600" />
                       <span className="text-gray-900">Check Current Mood</span>
                     </Link>
-                      <Link href="https://moodcatcher.canny.io/" className="flex items-center space-x-2" onClick={handleLinkClick}>
-                      <RiFeedbackLine className="text-blue-600" />
-                      <span className="text-gray-900">Feedback & Support</span>
-                    </Link>
                   </div>
                 )}
               </div>
